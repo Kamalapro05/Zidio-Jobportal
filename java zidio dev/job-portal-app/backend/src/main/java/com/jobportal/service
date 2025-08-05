@@ -1,0 +1,71 @@
+package com.jobportal.service;
+
+import com.jobportal.dto.JobDTO;
+import com.jobportal.dto.UserDTO;
+import com.jobportal.model.Job;
+import com.jobportal.model.User;
+import com.jobportal.repository.JobRepository;
+import com.jobportal.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class JobService {
+
+    @Autowired
+    private JobRepository jobRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<Job> getAllJobs() {
+        return jobRepository.findAll();
+    }
+
+    public Optional<Job> getJobById(Long id) {
+        return jobRepository.findById(id);
+    }
+
+    public Job createJob(JobDTO jobDTO) {
+        Job job = new Job();
+        job.setTitle(jobDTO.getTitle());
+        job.setDescription(jobDTO.getDescription());
+        job.setCompany(jobDTO.getCompany());
+        job.setLocation(jobDTO.getLocation());
+        return jobRepository.save(job);
+    }
+
+    public void deleteJob(Long id) {
+        jobRepository.deleteById(id);
+    }
+}
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public User createUser(UserDTO userDTO) {
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setEmail(userDTO.getEmail());
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+}

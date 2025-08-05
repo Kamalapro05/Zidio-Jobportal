@@ -1,0 +1,59 @@
+package com.jobportal.model;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+    private String password;
+    private String email;
+    private String role; // e.g., "ROLE_SEEKER", "ROLE_RECRUITER", "ROLE_ADMIN"
+
+    // Getters and Setters
+}
+
+@Entity
+@Table(name = "jobs")
+public class Job {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String description;
+    private String company;
+    private String location;
+    private String type; // e.g., "FULL_TIME", "PART_TIME", "CONTRACT"
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User recruiter;
+
+    // Getters and Setters
+}
+
+@Entity
+@Table(name = "applications")
+public class Application {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "job_id")
+    private Job job;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User applicant;
+
+    private String status; // e.g., "PENDING", "ACCEPTED", "REJECTED"
+
+    // Getters and Setters
+}

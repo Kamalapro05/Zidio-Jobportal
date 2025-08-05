@@ -1,0 +1,52 @@
+package com.jobportal.controller;
+
+import com.jobportal.dto.JobDto;
+import com.jobportal.dto.UserDto;
+import com.jobportal.service.JobService;
+import com.jobportal.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
+public class JobPortalController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JobService jobService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
+        UserDto registeredUser = userService.registerUser(userDto);
+        return ResponseEntity.ok(registeredUser);
+    }
+
+    @PostMapping("/jobs")
+    public ResponseEntity<JobDto> createJob(@RequestBody JobDto jobDto) {
+        JobDto createdJob = jobService.createJob(jobDto);
+        return ResponseEntity.ok(createdJob);
+    }
+
+    @GetMapping("/jobs")
+    public ResponseEntity<List<JobDto>> getAllJobs() {
+        List<JobDto> jobs = jobService.getAllJobs();
+        return ResponseEntity.ok(jobs);
+    }
+
+    @GetMapping("/jobs/{id}")
+    public ResponseEntity<JobDto> getJobById(@PathVariable Long id) {
+        JobDto job = jobService.getJobById(id);
+        return ResponseEntity.ok(job);
+    }
+
+    @DeleteMapping("/jobs/{id}")
+    public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
+        jobService.deleteJob(id);
+        return ResponseEntity.noContent().build();
+    }
+}
